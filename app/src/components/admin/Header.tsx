@@ -9,6 +9,10 @@ export default function AdminHeader() {
   const { theme, setTheme } = useTheme();
   const [unreadCount, setUnreadCount] = useState(0);
 
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
   useEffect(() => {
     const fetchUnreadCount = async () => {
       try {

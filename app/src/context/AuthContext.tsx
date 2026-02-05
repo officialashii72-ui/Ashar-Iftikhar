@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('🔐 Attempting login with:', email);
 
       // Get API URL from environment
-      const API_URL = process.env.VITE_API_URL || 'http://localhost:5000/api';
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
       // Use direct fetch to avoid axios issues
       const response = await fetch(`${API_URL}/auth/login`, {
