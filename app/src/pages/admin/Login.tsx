@@ -155,7 +155,7 @@ export default function AdminLogin() {
                 setIsLoading(true);
                 
                 try {
-                  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+                  const API_URL = process.env.VITE_API_URL || 'http://localhost:5000/api';
                   console.log('API URL:', API_URL);
                   
                   const response = await fetch(`${API_URL}/auth/login`, {
@@ -214,7 +214,7 @@ export default function AdminLogin() {
                 <div className={`w-2 h-2 rounded-full ${isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-green-500'}`}></div>
                 <span>Status: {isLoading ? 'Loading...' : 'Ready'}</span>
               </div>
-              <div>API: {import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}</div>
+              <div>API: {process.env.VITE_API_URL || 'http://localhost:5000/api'}</div>
               <div>Token: {localStorage.getItem('token') ? '✅ Stored' : '❌ Missing'}</div>
             </div>
           </div>

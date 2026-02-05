@@ -30,3 +30,42 @@ Thumbs.db
 # Build files
 dist/
 build/
+
+# Create a comprehensive .gitignore
+@"
+# Dependencies
+node_modules/
+server/node_modules/
+dist/
+
+# Environment
+.env
+.env.local
+
+# Uploads (user-generated content)
+uploads/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Package files (can be regenerated)
+package-lock.json
+yarn.lock
+"@ | Out-File -FilePath .gitignore -Encoding UTF8

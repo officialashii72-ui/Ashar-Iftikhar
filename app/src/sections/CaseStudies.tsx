@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Clock, TrendingUp, ExternalLink, Sparkles } from 'lucide-react';
+import { ArrowRight, TrendingUp, ExternalLink, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ComparisonSlider from '../components/ComparisonSlider';
 

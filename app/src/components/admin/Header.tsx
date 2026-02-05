@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { contactAPI } from '../../services/api';
 
 export default function AdminHeader() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
