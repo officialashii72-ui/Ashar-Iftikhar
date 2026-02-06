@@ -13,8 +13,9 @@ const tags = [
   { icon: TrendingUp, label: 'AI Automation' },
 ];
 
-const DEFAULT_KEYWORDS = ["Websites", "Automations", "Landing Pages", "Digital Products"];
+const DEFAULT_KEYWORDS = ["Websites", "Automations", "Landing Pages", "Workflows"];
 const DEFAULT_STATIC_TEXT = "Building AI automation for";
+const DEFAULT_SUBTITLE = "I design and build clean, high-performing websites and Automation flows that save time and increase conversions.";
 
 function Counter({ value, duration = 1.5, suffix = "", loading = false }: { value: number; duration?: number; suffix?: string; loading?: boolean }) {
   const count = useMotionValue(0);
@@ -44,6 +45,7 @@ export default function Hero() {
   const [profile, setProfile] = useState<ProfileSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const [staticText, setStaticText] = useState(DEFAULT_STATIC_TEXT);
+  const [subtitle, setSubtitle] = useState(DEFAULT_SUBTITLE);
   const [keywords, setKeywords] = useState(DEFAULT_KEYWORDS);
 
   // High-Precision Keyword Typing Effect (Matches Old Portfolio)
@@ -90,6 +92,7 @@ export default function Hero() {
         if (response.ok) {
           const data = await response.json();
           if (data.staticText) setStaticText(data.staticText);
+          if (data.subtitle) setSubtitle(data.subtitle);
           if (data.typingWords && Array.isArray(data.typingWords) && data.typingWords.length > 0) {
             setKeywords(data.typingWords);
           }
@@ -162,13 +165,18 @@ export default function Hero() {
               transition={{ delay: 0.2 }}
               className="text-sm sm:text-[0.95rem] text-gray-600 dark:text-gray-300 mb-5 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium"
             >
-              I help {currentText}
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                className="inline-block w-[3px] h-[0.8em] bg-gray-600 dark:bg-gray-300 ml-1 translate-y-[0.1em]"
-              />
-              with smart AI automation and workflow solutions.
+              {subtitle}
+              <span
+                className="inline-block min-h-[1.2em]"
+                style={{ color: '#ff9800' }}
+              >
+                {currentText}
+                <motion.span
+                  animate={{ opacity: [1, 0] }}
+                  transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                  className="inline-block w-[3px] h-[0.8em] bg-[#ff9800] ml-1 translate-y-[0.1em]"
+                />
+              </span>
             </motion.p>
 
             <motion.div

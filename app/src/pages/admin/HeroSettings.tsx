@@ -7,6 +7,7 @@ import { useToast } from '../../context/ToastContext';
 
 interface HeroSettings {
   staticText: string;
+  subtitle: string;
   typingWords: string[];
   typingSpeed?: number;
   deletingSpeed?: number;
@@ -15,7 +16,8 @@ interface HeroSettings {
 
 const defaultSettings: HeroSettings = {
   staticText: "Building AI automation for",
-  typingWords: ["Businesses", "Coaches", "SaaS", "Agencies"],
+  subtitle: "I design and build clean, high-performing websites and Automation flows that save time and increase conversions.",
+  typingWords: ["Websites", "Automations", "Landing Pages", "Workflows"],
   typingSpeed: 80,
   deletingSpeed: 40,
   pauseDuration: 900
@@ -160,6 +162,23 @@ export default function AdminHeroSettings() {
                 />
               </div>
 
+              {/* Subtitle Text */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                  Subtitle / Description
+                </label>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                  The main description text that appears before the rotating words
+                </p>
+                <textarea
+                  value={settings.subtitle}
+                  onChange={(e) => setSettings({ ...settings, subtitle: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+                  placeholder='e.g., "I design and build clean, high-performing websites..."'
+                  rows={4}
+                />
+              </div>
+
               {/* Typing Words */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
@@ -279,9 +298,13 @@ export default function AdminHeroSettings() {
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-6">Live Preview</h3>
 
               <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg p-8 text-white min-h-[300px] flex flex-col justify-center">
-                <div className="text-lg md:text-2xl font-bold mb-4">
+                <div className="text-lg md:text-xl font-bold mb-4">
                   <span>{settings.staticText}</span>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-orange-200 inline-block ml-2">
+                </div>
+
+                <div className="text-sm md:text-base leading-relaxed mb-6">
+                  <span>{settings.subtitle}</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-orange-200 inline-block ml-1 font-semibold">
                     {previewText}
                   </span>
                 </div>

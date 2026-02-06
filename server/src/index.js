@@ -263,7 +263,8 @@ const settingsSchema = new mongoose.Schema({
 // Hero Settings Model
 const heroSettingsSchema = new mongoose.Schema({
     staticText: { type: String, default: "Building AI automation for" },
-    typingWords: { type: [String], default: ["Businesses", "Coaches", "SaaS", "Agencies"] },
+    subtitle: { type: String, default: "I design and build clean, high-performing websites and Automation flows that save time and increase conversions." },
+    typingWords: { type: [String], default: ["Websites", "Automations", "Landing Pages", "Workflows"] },
     typingSpeed: { type: Number, default: 80 },
     deletingSpeed: { type: Number, default: 40 },
     pauseDuration: { type: Number, default: 900 },
@@ -556,7 +557,8 @@ app.get("/api/hero-settings", async (req, res) => {
         } else {
             successResponse(res, {
                 staticText: "Building AI automation for",
-                typingWords: ["Businesses", "Coaches", "SaaS", "Agencies"],
+                subtitle: "I design and build clean, high-performing websites and Automation flows that save time and increase conversions.",
+                typingWords: ["Websites", "Automations", "Landing Pages", "Workflows"],
                 typingSpeed: 80,
                 deletingSpeed: 40,
                 pauseDuration: 900
@@ -578,15 +580,15 @@ app.put("/api/admin/hero-settings", async (req, res) => {
     }
 
     try {
-        const { staticText, typingWords, typingSpeed, deletingSpeed, pauseDuration } = req.body;
+        const { staticText, subtitle, typingWords, typingSpeed, deletingSpeed, pauseDuration } = req.body;
 
         let heroSettings = await HeroSettings.findOne();
         if (!heroSettings) {
-            heroSettings = await HeroSettings.create({ staticText, typingWords, typingSpeed, deletingSpeed, pauseDuration });
+            heroSettings = await HeroSettings.create({ staticText, subtitle, typingWords, typingSpeed, deletingSpeed, pauseDuration });
         } else {
             heroSettings = await HeroSettings.findOneAndUpdate(
                 {},
-                { staticText, typingWords, typingSpeed, deletingSpeed, pauseDuration, updatedAt: Date.now() },
+                { staticText, subtitle, typingWords, typingSpeed, deletingSpeed, pauseDuration, updatedAt: Date.now() },
                 { new: true, upsert: true }
             );
         }
