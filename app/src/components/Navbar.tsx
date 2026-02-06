@@ -90,13 +90,13 @@ export default function Navbar() {
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-14 lg:h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
-              <Zap className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
+              <Zap className="w-4 h-4 text-white" />
             </div>
-            <span className="font-bold text-base sm:text-xl text-gray-900 dark:text-white truncate">
+            <span className="font-bold text-sm sm:text-base text-gray-900 dark:text-white truncate">
               {settings.siteTitle?.split(' - ')[0] || 'Ashar Iftikhar'}
             </span>
           </Link>

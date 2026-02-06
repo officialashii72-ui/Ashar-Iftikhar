@@ -123,7 +123,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="hero" className="relative h-auto lg:h-screen lg:max-h-[800px] flex items-center justify-center overflow-hidden pt-8 pb-4 px-4">
+    <section id="hero" className="relative h-auto flex items-center justify-center overflow-hidden pt-4 pb-2 px-4">
       {/* Optimized Background - Subtle & Minimal */}
       <div className="absolute inset-0 bg-slate-50 dark:bg-gray-950 transition-colors duration-500">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-purple-500/5 opacity-50" />
@@ -136,26 +136,26 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 max-w-6xl mx-auto py-2">
-        <div className="grid lg:grid-cols-2 gap-4 items-center">
+      <div className="relative z-10 max-w-6xl mx-auto py-0">
+        <div className="grid lg:grid-cols-[1.5fr_1fr] gap-2 lg:gap-4 items-center">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center lg:text-left"
+            className="text-center lg:text-left py-4"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 text-xs font-bold mb-3 border border-indigo-100 dark:border-indigo-900/50"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 text-xs font-bold mb-2 border border-indigo-100 dark:border-indigo-900/50"
             >
-              <Sparkles className="w-3.5 h-3.5 fill-indigo-500/20" />
+              <Sparkles className="w-3 h-3 fill-indigo-500/20" />
               <span>Creative Portfolio</span>
             </motion.div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-[2.85rem] font-extrabold text-gray-900 dark:text-white leading-[1.1] mb-3 tracking-tight">
+            <h1 className="text-3xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight mb-2 tracking-tight">
               {staticText}
             </h1>
 
@@ -163,7 +163,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-sm sm:text-[0.95rem] text-gray-600 dark:text-gray-300 mb-5 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium"
+              className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-3 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium"
             >
               {subtitle}
               <span
@@ -183,7 +183,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
+              className="flex flex-col sm:flex-row gap-2 justify-center lg:justify-start mb-4"
             >
               <a
                 href="https://calendly.com/ashariftikhar"
@@ -191,19 +191,19 @@ export default function Hero() {
                 rel="noopener noreferrer"
               >
                 <Button
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6 py-4 text-sm font-bold group shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all duration-300"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-4 py-2 text-xs font-bold group shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all duration-300"
                 >
-                  Book Free AI Audit
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  Book Free Audit
+                  <ArrowRight className="ml-1.5 w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                 </Button>
               </a>
               <a href="#tools">
                 <Button
                   variant="outline"
-                  className="rounded-full px-6 py-4 text-sm font-bold group border hover:bg-white dark:hover:bg-gray-800 transition-all duration-300"
+                  className="rounded-full px-4 py-2 text-xs font-bold group border hover:bg-white dark:hover:bg-gray-800 transition-all duration-300"
                 >
-                  <Play className="mr-2 w-4 h-4 fill-indigo-600 text-indigo-600 group-hover:scale-110 transition-transform" />
-                  See AI Tools
+                  <Play className="mr-1.5 w-3 h-3 fill-indigo-600 text-indigo-600 group-hover:scale-110 transition-transform" />
+                  View Tools
                 </Button>
               </a>
             </motion.div>
@@ -239,17 +239,17 @@ export default function Hero() {
             transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
             className="flex justify-center lg:justify-end"
           >
-            <div className="relative group max-w-[340px] w-full">
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-600/5 rounded-[1.5rem] blur-xl opacity-30 group-hover:opacity-60 transition-opacity duration-700" />
+            <div className="relative group max-w-[280px] w-full">
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-600/5 rounded-2xl blur-lg opacity-30 group-hover:opacity-60 transition-opacity duration-700" />
 
               <motion.div
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -3 }}
                 transition={{ type: "spring", stiffness: 200 }}
-                className="relative bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-[1.5rem] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] border border-white/50 dark:border-gray-800/50"
+                className="relative bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-2xl p-4 shadow-lg shadow-black/5 dark:shadow-black/20 border border-white/50 dark:border-gray-800/50"
               >
                 {/* Profile Photo */}
                 <motion.div
-                  className="relative w-24 h-24 mx-auto mb-3 rounded-2xl overflow-hidden shadow-lg ring-1 ring-indigo-50 dark:ring-indigo-900/10"
+                  className="relative w-20 h-20 mx-auto mb-2 rounded-xl overflow-hidden shadow-md ring-1 ring-indigo-50 dark:ring-indigo-900/10"
                 >
                   {loading ? (
                     <div className="w-full h-full bg-gray-200 dark:bg-gray-800 animate-pulse" />
@@ -260,44 +260,43 @@ export default function Hero() {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl font-black">
+                    <div className="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl font-black">
                       AI
                     </div>
                   )}
                 </motion.div>
 
                 <div className="text-center">
-                  <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-1 tracking-tight">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-0.5 tracking-tight">
                     {settings.siteTitle?.split(' - ')[0] || 'Ashar Iftikhar'}
                   </h3>
-                  <p className="text-indigo-600 dark:text-indigo-400 font-bold text-sm mb-5">
-                    {settings.siteTitle?.split(' - ')[1] || 'AI Systems Architect'}
+                  <p className="text-indigo-600 dark:text-indigo-400 font-bold text-xs mb-3">
                   </p>
 
                   {/* Stats with Skeletons */}
-                  <div className="grid grid-cols-3 gap-3 mb-6">
+                  <div className="grid grid-cols-3 gap-2 mb-4">
                     <div className="text-center space-y-0.5">
-                      <div className="text-xl font-black text-gray-900 dark:text-white">
+                      <div className="text-sm font-bold text-gray-900 dark:text-white">
                         <Counter value={profile?.aiTools || 15} suffix="+" loading={loading} />
                       </div>
-                      <div className="text-[9px] uppercase tracking-widest text-gray-500 dark:text-gray-400 font-black">AI Tools</div>
+                      <div className="text-[8px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold">AI Tools</div>
                     </div>
                     <div className="text-center space-y-0.5">
-                      <div className="text-xl font-black text-gray-900 dark:text-white">
+                      <div className="text-sm font-bold text-gray-900 dark:text-white">
                         <Counter value={profile?.hoursSaved || 500} suffix="+" loading={loading} />
                       </div>
-                      <div className="text-[9px] uppercase tracking-widest text-gray-500 dark:text-gray-400 font-black">Hrs Saved</div>
+                      <div className="text-[8px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold">Hrs Saved</div>
                     </div>
                     <div className="text-center space-y-0.5">
-                      <div className="text-xl font-black text-gray-900 dark:text-white">
+                      <div className="text-sm font-bold text-gray-900 dark:text-white">
                         <Counter value={profile?.clients || 50} suffix="+" loading={loading} />
                       </div>
-                      <div className="text-[9px] uppercase tracking-widest text-gray-500 dark:text-gray-400 font-black">Clients</div>
+                      <div className="text-[8px] uppercase tracking-wider text-gray-500 dark:text-gray-400 font-bold">Clients</div>
                     </div>
                   </div>
 
                   {/* Social Buttons */}
-                  <div className="flex justify-center gap-2">
+                  <div className="flex justify-center gap-1.5">
                     {[
                       { icon: Github, href: settings.socialLinks?.github, title: "GitHub" },
                       { icon: Linkedin, href: settings.socialLinks?.linkedin, title: "LinkedIn" },
@@ -308,9 +307,9 @@ export default function Hero() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ scale: 1.08, y: -1 }}
+                        whileHover={{ scale: 1.1, translateY: -2 }}
                         whileTap={{ scale: 0.95 }}
-                        className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-white hover:bg-indigo-600 dark:hover:bg-indigo-500 transition-all duration-300 shadow-sm"
+                        className="p-1 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-white hover:bg-indigo-600 dark:hover:bg-indigo-500 transition-all duration-300 shadow-sm"
                         title={social.title}
                       >
                         <social.icon className="w-3 h-3" />
