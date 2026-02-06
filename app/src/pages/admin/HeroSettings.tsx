@@ -38,7 +38,10 @@ export default function AdminHeroSettings() {
 
   const fetchSettings = async () => {
     try {
-      const response = await fetch('/api/hero-settings');
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/hero-settings', {
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+      });
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: Failed to fetch hero settings`);
       }
@@ -59,13 +62,25 @@ export default function AdminHeroSettings() {
     setIsSaving(true);
 
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch('/api/admin/hero-settings', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
         },
         body: JSON.stringify(settings),
       });
+
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Non-JSON response:', text);
+        error(`Server error: ${response.status} ${response.statusText}. Check browser console.`);
+        setIsSaving(false);
+        return;
+      }
 
       const data = await response.json();
       
@@ -80,7 +95,7 @@ export default function AdminHeroSettings() {
       }
     } catch (err) {
       console.error('Save error:', err);
-      error(`Network error: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      error(`Error: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setIsSaving(false);
     }

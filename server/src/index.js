@@ -570,7 +570,7 @@ app.get("/api/hero-settings", async (req, res) => {
     }
 });
 
-app.put("/api/admin/hero-settings", async (req, res) => {
+app.put("/api/admin/hero-settings", authenticate, async (req, res) => {
     if (!isDBConnected()) {
         console.error("❌ PUT /api/admin/hero-settings: Database not connected");
         return errorResponse(res, 
