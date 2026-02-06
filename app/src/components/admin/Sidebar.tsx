@@ -15,6 +15,7 @@ import {
   X,
   Star,
   User as UserIcon,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -27,6 +28,7 @@ const navItems = [
   { path: '/admin/messages', icon: MessageSquare, label: 'Messages' },
   { path: '/admin/profile', icon: UserIcon, label: 'Profile Settings' },
   { path: '/admin/media', icon: Image, label: 'Media Manager' },
+  { path: '/admin/hero-settings', icon: Sparkles, label: 'Hero Settings' },
   { path: '/admin/settings', icon: Settings, label: 'Settings' },
 ];
 

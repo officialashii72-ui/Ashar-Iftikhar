@@ -13,7 +13,8 @@ const tags = [
   { icon: TrendingUp, label: 'AI Automation' },
 ];
 
-const keywords = ["Websites", "Automations", "Landing Pages", "Digital Products"];
+const DEFAULT_KEYWORDS = ["Websites", "Automations", "Landing Pages", "Digital Products"];
+const DEFAULT_STATIC_TEXT = "Building AI automation for";
 
 function Counter({ value, duration = 1.5, suffix = "", loading = false }: { value: number; duration?: number; suffix?: string; loading?: boolean }) {
   const count = useMotionValue(0);
@@ -42,6 +43,8 @@ export default function Hero() {
   const { settings } = useSettings();
   const [profile, setProfile] = useState<ProfileSettings | null>(null);
   const [loading, setLoading] = useState(true);
+  const [staticText, setStaticText] = useState(DEFAULT_STATIC_TEXT);
+  const [keywords, setKeywords] = useState(DEFAULT_KEYWORDS);
 
   // High-Precision Keyword Typing Effect (Matches Old Portfolio)
   const [keywordIndex, setKeywordIndex] = useState(0);
@@ -79,6 +82,25 @@ export default function Hero() {
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, keywordIndex, typingSpeed]);
+
+  useEffect(() => {
+    const fetchHeroSettings = async () => {
+      try {
+        const response = await fetch('/api/hero-settings');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.staticText) setStaticText(data.staticText);
+          if (data.typingWords && Array.isArray(data.typingWords) && data.typingWords.length > 0) {
+            setKeywords(data.typingWords);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch hero settings:', err);
+        // Will use defaults if fetch fails
+      }
+    };
+    fetchHeroSettings();
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -131,7 +153,7 @@ export default function Hero() {
             </motion.div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-[2.85rem] font-extrabold text-gray-900 dark:text-white leading-[1.1] mb-3 tracking-tight">
-              Building AI automation systems for <br className="hidden sm:block" />
+              {staticText} <br className="hidden sm:block" />
               <span
                 className="inline-block min-h-[1.2em]"
                 style={{ color: '#ff9800' }}

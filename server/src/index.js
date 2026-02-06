@@ -260,6 +260,16 @@ const settingsSchema = new mongoose.Schema({
     updatedAt: { type: Date, default: Date.now }
 });
 
+// Hero Settings Model
+const heroSettingsSchema = new mongoose.Schema({
+    staticText: { type: String, default: "Building AI automation for" },
+    typingWords: { type: [String], default: ["Businesses", "Coaches", "SaaS", "Agencies"] },
+    typingSpeed: { type: Number, default: 80 },
+    deletingSpeed: { type: Number, default: 40 },
+    pauseDuration: { type: Number, default: 900 },
+    updatedAt: { type: Date, default: Date.now }
+});
+
 // Create models
 const Project = mongoose.model("Project", projectSchema);
 const Service = mongoose.model("Service", serviceSchema);
@@ -268,6 +278,7 @@ const Testimonial = mongoose.model("Testimonial", testimonialSchema);
 const Contact = mongoose.model("Contact", contactSchema);
 const Settings = mongoose.model("Settings", settingsSchema);
 const Profile = mongoose.model("Profile", profileSchema);
+const HeroSettings = mongoose.model("HeroSettings", heroSettingsSchema);
 
 // ===========================================
 // DEMO DATA (for when DB not connected)
@@ -530,6 +541,60 @@ app.put("/api/settings", async (req, res) => {
     } catch (error) {
         console.error("Settings save error:", error);
         errorResponse(res, "Failed to save settings");
+    }
+});
+
+// Hero Settings Endpoints
+app.get("/api/hero-settings", async (req, res) => {
+    try {
+        if (isDBConnected()) {
+            let heroSettings = await HeroSettings.findOne();
+            if (!heroSettings) {
+                heroSettings = await HeroSettings.create({});
+            }
+            successResponse(res, heroSettings);
+        } else {
+            successResponse(res, {
+                staticText: "Building AI automation for",
+                typingWords: ["Businesses", "Coaches", "SaaS", "Agencies"],
+                typingSpeed: 80,
+                deletingSpeed: 40,
+                pauseDuration: 900
+            });
+        }
+    } catch (error) {
+        console.error("Hero settings fetch error:", error);
+        errorResponse(res, "Failed to fetch hero settings");
+    }
+});
+
+app.put("/api/admin/hero-settings", async (req, res) => {
+    if (!isDBConnected()) {
+        console.error("❌ PUT /api/admin/hero-settings: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot update hero settings. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+
+    try {
+        const { staticText, typingWords, typingSpeed, deletingSpeed, pauseDuration } = req.body;
+
+        let heroSettings = await HeroSettings.findOne();
+        if (!heroSettings) {
+            heroSettings = await HeroSettings.create({ staticText, typingWords, typingSpeed, deletingSpeed, pauseDuration });
+        } else {
+            heroSettings = await HeroSettings.findOneAndUpdate(
+                {},
+                { staticText, typingWords, typingSpeed, deletingSpeed, pauseDuration, updatedAt: Date.now() },
+                { new: true, upsert: true }
+            );
+        }
+        console.log("✅ Hero settings updated");
+        successResponse(res, heroSettings, "Hero settings updated successfully");
+    } catch (error) {
+        console.error("❌ Hero settings update error:", error);
+        errorResponse(res, `Failed to update hero settings: ${error.message}`);
     }
 });
 
@@ -882,26 +947,42 @@ app.post("/api/services", async (req, res) => {
 });
 
 app.put("/api/services/:id", async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ PUT /api/services/:id: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot update service. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
-        if (isDBConnected()) {
-            const service = await Service.findByIdAndUpdate(req.params.id, req.body, { new: true });
-            successResponse(res, service);
-        } else {
-            successResponse(res, { ...req.body, _id: req.params.id });
-        }
+        const service = await Service.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        console.log("✅ Service updated with ID:", req.params.id);
+        successResponse(res, service, "Service updated successfully");
     } catch (error) {
-        errorResponse(res, "Failed to update service");
+        console.error("❌ Service update error:", error);
+        errorResponse(res, `Failed to update service: ${error.message}`);
     }
 });
 
 app.delete("/api/services/:id", async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ DELETE /api/services/:id: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot delete service. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
-        if (isDBConnected()) {
-            await Service.findByIdAndDelete(req.params.id);
-        }
-        successResponse(res, null, "Service deleted");
+        await Service.findByIdAndDelete(req.params.id);
+        console.log("✅ Service deleted with ID:", req.params.id);
+        successResponse(res, null, "Service deleted successfully");
     } catch (error) {
-        errorResponse(res, "Failed to delete service");
+        console.error("❌ Service deletion error:", error);
+        errorResponse(res, `Failed to delete service: ${error.message}`);
     }
 });
 
@@ -934,52 +1015,73 @@ app.get("/api/blog/id/:id", async (req, res) => {
 });
 
 app.post("/api/blog", upload.single('image'), normalizeMultipart, async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ POST /api/blog: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot save blog post. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
         let postData = { ...req.body };
         if (req.file) {
             postData.image = `/uploads/${req.file.filename}`;
         }
 
-        if (isDBConnected()) {
-            const post = new BlogPost(postData);
-            await post.save();
-            successResponse(res, post);
-        } else {
-            const post = { ...postData, _id: Date.now().toString() };
-            successResponse(res, post);
-        }
+        const post = new BlogPost(postData);
+        await post.save();
+        console.log("✅ Blog post saved with ID:", post._id);
+        successResponse(res, post, "Blog post created successfully");
     } catch (error) {
-        console.error("Blog post creation error:", error);
-        errorResponse(res, "Failed to create post");
+        console.error("❌ Blog post creation error:", error);
+        errorResponse(res, `Failed to create post: ${error.message}`);
     }
 });
 
 app.put("/api/blog/:id", upload.single('image'), normalizeMultipart, async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ PUT /api/blog/:id: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot update blog post. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
         let updateData = { ...req.body };
         if (req.file) {
             updateData.image = `/uploads/${req.file.filename}`;
         }
 
-        if (isDBConnected()) {
-            const post = await BlogPost.findByIdAndUpdate(req.params.id, updateData, { new: true });
-            successResponse(res, post);
-        } else {
-            successResponse(res, { ...updateData, _id: req.params.id });
-        }
+        const post = await BlogPost.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        console.log("✅ Blog post updated with ID:", req.params.id);
+        successResponse(res, post, "Blog post updated successfully");
     } catch (error) {
-        errorResponse(res, "Failed to update post");
+        console.error("❌ Blog post update error:", error);
+        errorResponse(res, `Failed to update post: ${error.message}`);
     }
 });
 
 app.delete("/api/blog/:id", async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ DELETE /api/blog/:id: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot delete blog post. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
-        if (isDBConnected()) {
-            await BlogPost.findByIdAndDelete(req.params.id);
-        }
-        successResponse(res, null, "Post deleted");
+        await BlogPost.findByIdAndDelete(req.params.id);
+        console.log("✅ Blog post deleted with ID:", req.params.id);
+        successResponse(res, null, "Post deleted successfully");
     } catch (error) {
-        errorResponse(res, "Failed to delete post");
+        console.error("❌ Blog post deletion error:", error);
+        errorResponse(res, `Failed to delete post: ${error.message}`);
     }
 });
 
@@ -1012,6 +1114,15 @@ app.get("/api/testimonials/:id", async (req, res) => {
 });
 
 app.post("/api/testimonials", upload.single('avatar'), normalizeMultipart, async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ POST /api/testimonials: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot save testimonial. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
         let testimonialData = { ...req.body };
         if (req.file) {
@@ -1019,47 +1130,58 @@ app.post("/api/testimonials", upload.single('avatar'), normalizeMultipart, async
         }
         console.log("Creating testimonial with data:", testimonialData);
 
-        if (isDBConnected()) {
-            const testimonial = new Testimonial(testimonialData);
-            await testimonial.save();
-            successResponse(res, testimonial);
-        } else {
-            console.log("⚠️ TESTIMONIAL CREATED IN DEMO MODE (NOT PERSISTED)");
-            const testimonial = { ...testimonialData, _id: Date.now().toString() };
-            successResponse(res, testimonial);
-        }
+        const testimonial = new Testimonial(testimonialData);
+        await testimonial.save();
+        console.log("✅ Testimonial saved with ID:", testimonial._id);
+        successResponse(res, testimonial, "Testimonial created successfully");
     } catch (error) {
-        console.error("Testimonial creation error:", error);
-        errorResponse(res, "Failed to create testimonial");
+        console.error("❌ Testimonial creation error:", error);
+        errorResponse(res, `Failed to create testimonial: ${error.message}`);
     }
 });
 
 app.put("/api/testimonials/:id", upload.single('avatar'), normalizeMultipart, async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ PUT /api/testimonials/:id: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot update testimonial. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
         let updateData = { ...req.body };
         if (req.file) {
             updateData.avatar = `/uploads/${req.file.filename}`;
         }
 
-        if (isDBConnected()) {
-            const testimonial = await Testimonial.findByIdAndUpdate(req.params.id, updateData, { new: true });
-            successResponse(res, testimonial);
-        } else {
-            successResponse(res, { ...updateData, _id: req.params.id });
-        }
+        const testimonial = await Testimonial.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        console.log("✅ Testimonial updated with ID:", req.params.id);
+        successResponse(res, testimonial, "Testimonial updated successfully");
     } catch (error) {
-        errorResponse(res, "Failed to update testimonial");
+        console.error("❌ Testimonial update error:", error);
+        errorResponse(res, `Failed to update testimonial: ${error.message}`);
     }
 });
 
 app.delete("/api/testimonials/:id", async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ DELETE /api/testimonials/:id: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot delete testimonial. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
-        if (isDBConnected()) {
-            await Testimonial.findByIdAndDelete(req.params.id);
-        }
-        successResponse(res, null, "Testimonial deleted");
+        await Testimonial.findByIdAndDelete(req.params.id);
+        console.log("✅ Testimonial deleted with ID:", req.params.id);
+        successResponse(res, null, "Testimonial deleted successfully");
     } catch (error) {
-        errorResponse(res, "Failed to delete testimonial");
+        console.error("❌ Testimonial deletion error:", error);
+        errorResponse(res, `Failed to delete testimonial: ${error.message}`);
     }
 });
 

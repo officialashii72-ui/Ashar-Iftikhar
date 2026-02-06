@@ -36,6 +36,7 @@ const AdminTestimonials = lazy(() => import('./pages/admin/Testimonials'));
 const AdminMessages = lazy(() => import('./pages/admin/Messages'));
 const AdminMedia = lazy(() => import('./pages/admin/Media'));
 const AdminSettings = lazy(() => import('./pages/admin/Settings'));
+const AdminHeroSettings = lazy(() => import('./pages/admin/HeroSettings'));
 const AdminProfile = lazy(() => import('./pages/admin/Profile'));
 
 // Admin Forms
@@ -102,6 +103,7 @@ function App() {
                       <Route path="messages" element={<AdminMessages />} />
                       <Route path="media" element={<AdminMedia />} />
                       <Route path="settings" element={<AdminSettings />} />
+                      <Route path="hero-settings" element={<AdminHeroSettings />} />
                       <Route path="profile" element={<AdminProfile />} />
                     </Route>
                   </Routes>
