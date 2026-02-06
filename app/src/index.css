@@ -25,24 +25,24 @@
 }
 
 .dark {
-  --background: #111827;
-  --foreground: #f9fafb;
-  --card: #1f2937;
-  --card-foreground: #f9fafb;
-  --popover: #1f2937;
-  --popover-foreground: #f9fafb;
-  --primary: #6366f1;
+  --background: #0f1419;
+  --foreground: #f0f4f8;
+  --card: #1a1f2e;
+  --card-foreground: #f0f4f8;
+  --popover: #1a1f2e;
+  --popover-foreground: #f0f4f8;
+  --primary: #818cf8;
   --primary-foreground: #ffffff;
-  --secondary: #374151;
-  --secondary-foreground: #f9fafb;
-  --muted: #374151;
-  --muted-foreground: #9ca3af;
-  --accent: #374151;
-  --accent-foreground: #f9fafb;
+  --secondary: #4b5563;
+  --secondary-foreground: #f0f4f8;
+  --muted: #4b5563;
+  --muted-foreground: #cbd5e1;
+  --accent: #4b5563;
+  --accent-foreground: #f0f4f8;
   --destructive: #ef4444;
-  --border: #374151;
-  --input: #374151;
-  --ring: #6366f1;
+  --border: #4b5563;
+  --input: #4b5563;
+  --ring: #818cf8;
 }
 
 @layer base {
@@ -119,4 +119,14 @@
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #64748b;
+}
+
+/* Admin Panel Styling */
+body.admin {
+  font-size: 90%;
+}
+
+/* Ensure smooth text selection everywhere */
+input, textarea, [contenteditable] {
+  user-select: text;
 }

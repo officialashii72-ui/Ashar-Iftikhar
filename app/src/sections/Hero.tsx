@@ -306,34 +306,19 @@ export default function Hero() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ scale: 1.1, rotate: 3, y: -2 }}
+                        whileHover={{ scale: 1.08, y: -1 }}
                         whileTap={{ scale: 0.95 }}
-                        className="p-2 rounded-xl bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-white hover:bg-indigo-600 dark:hover:bg-indigo-500 transition-all duration-300 shadow-sm"
+                        className="p-1.5 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-white hover:bg-indigo-600 dark:hover:bg-indigo-500 transition-all duration-300 shadow-sm"
                         title={social.title}
                       >
-                        <social.icon className="w-3.5 h-3.5" />
+                        <social.icon className="w-3 h-3" />
                       </motion.a>
                     ))}
                   </div>
                 </div>
               </motion.div>
 
-              {/* Floating Accents - Simplified & Smaller */}
-              <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute -top-3 -right-3 w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center shadow-xl z-20"
-              >
-                <span className="text-white text-xl select-none">⚡</span>
-              </motion.div>
 
-              <motion.div
-                animate={{ y: [0, 6, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute -bottom-3 -left-3 w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center shadow-xl z-20"
-              >
-                <span className="text-white text-sm select-none">🤖</span>
-              </motion.div>
             </div>
           </motion.div>
         </div>
