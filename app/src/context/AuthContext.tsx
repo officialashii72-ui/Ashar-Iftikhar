@@ -40,6 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Get API URL from environment
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      console.log('📡 Using API URL:', API_URL);
 
       // Use direct fetch to avoid axios issues
       const response = await fetch(`${API_URL}/auth/login`, {
@@ -48,11 +49,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
+        credentials: 'include'
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch (e) {
+          // Could not parse error response
+        }
+        
+        if (response.status === 0 || response.type === 'opaque') {
+          throw new Error('Cannot reach server. Is the backend running? Make sure npm run dev is started in the server directory.');
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -72,14 +85,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
     } catch (error: any) {
-      console.error('Login error:', error);
+      console.error('⚠️  Login error details:', error);
+      
+      // Provide helpful error messages
+      let userFriendlyMessage = error.message;
+      if (error.message.includes('fetch')) {
+        userFriendlyMessage = 'Cannot connect to server. Make sure the backend is running: npm run dev in server directory';
+      } else if (error.message.includes('Failed to fetch')) {
+        userFriendlyMessage = 'Network error. Is the backend server running on port 5000?';
+      }
 
       // Clear any invalid data
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       setUser(null);
 
-      throw new Error(error.message || 'Login failed. Please check credentials.');
+      throw new Error(userFriendlyMessage);
     }
   };
 

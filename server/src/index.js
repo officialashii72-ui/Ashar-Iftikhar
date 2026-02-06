@@ -13,9 +13,29 @@ const PORT = process.env.PORT || 5000;
 // ===========================================
 // MIDDLEWARE
 // ===========================================
+// Setup CORS to accept both local and production origins
+const allowedOrigins = [
+    "http://localhost:5173",     // Vite dev server
+    "http://localhost:3000",     // Alt dev server
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
+    "https://ashariftikhar.vercel.app", // Vercel production
+    "https://ashariftikhar.com",  // Custom domain (if exists)
+    process.env.FRONTEND_URL      // From .env
+].filter(Boolean);
+
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:3000"],
-    credentials: true
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.warn(`❌ CORS blocked origin: ${origin}`);
+            callback(new Error('CORS policy violation'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
