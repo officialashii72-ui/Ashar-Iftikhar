@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '../../context/ToastContext';
 
+// Get API base URL
+const API_BASE_URL = (() => {
+  const env = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api';
+  return String(env).replace(/\/+$/, '').endsWith('/api') ? String(env).replace(/\/+$/, '') : String(env).replace(/\/+$/, '') + '/api';
+})();
+
 interface HeroSettings {
   staticText: string;
   subtitle: string;
@@ -39,7 +45,7 @@ export default function AdminHeroSettings() {
   const fetchSettings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('/api/hero-settings', {
+      const response = await fetch(`${API_BASE_URL}/hero-settings`, {
         headers: token ? { 'Authorization': `Bearer ${token}` } : {},
       });
       if (!response.ok) {
@@ -63,7 +69,7 @@ export default function AdminHeroSettings() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('/api/admin/hero-settings', {
+      const response = await fetch(`${API_BASE_URL}/admin/hero-settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

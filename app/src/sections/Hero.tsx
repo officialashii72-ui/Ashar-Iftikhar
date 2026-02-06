@@ -88,13 +88,19 @@ export default function Hero() {
   useEffect(() => {
     const fetchHeroSettings = async () => {
       try {
-        const response = await fetch('/api/hero-settings');
+        // Get API URL from environment or use default
+        const apiBase = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api';
+        const normalizedApi = String(apiBase).replace(/\/+$/, '').endsWith('/api') ? String(apiBase).replace(/\/+$/, '') : String(apiBase).replace(/\/+$/, '') + '/api';
+        
+        const response = await fetch(`${normalizedApi}/hero-settings`);
         if (response.ok) {
           const data = await response.json();
-          if (data.staticText) setStaticText(data.staticText);
-          if (data.subtitle) setSubtitle(data.subtitle);
-          if (data.typingWords && Array.isArray(data.typingWords) && data.typingWords.length > 0) {
-            setKeywords(data.typingWords);
+          if (data.data) {
+            if (data.data.staticText) setStaticText(data.data.staticText);
+            if (data.data.subtitle) setSubtitle(data.data.subtitle);
+            if (data.data.typingWords && Array.isArray(data.data.typingWords) && data.data.typingWords.length > 0) {
+              setKeywords(data.data.typingWords);
+            }
           }
         }
       } catch (err) {
