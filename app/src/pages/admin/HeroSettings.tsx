@@ -60,6 +60,10 @@ export default function AdminHeroSettings() {
         body: JSON.stringify(settings),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       if (data.success) {
         success('Hero settings saved successfully');
@@ -67,7 +71,7 @@ export default function AdminHeroSettings() {
         error(data.message || 'Failed to save hero settings');
       }
     } catch (err) {
-      console.error(err);
+      console.error('Save error:', err);
       error('Failed to save hero settings');
     } finally {
       setIsSaving(false);

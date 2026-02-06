@@ -153,18 +153,7 @@ export default function Hero() {
             </motion.div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-[2.85rem] font-extrabold text-gray-900 dark:text-white leading-[1.1] mb-3 tracking-tight">
-              {staticText} <br className="hidden sm:block" />
-              <span
-                className="inline-block min-h-[1.2em]"
-                style={{ color: '#ff9800' }}
-              >
-                {currentText}
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                  className="inline-block w-[3px] h-[0.8em] bg-[#ff9800] ml-1 translate-y-[0.1em]"
-                />
-              </span>
+              {staticText}
             </h1>
 
             <motion.p
@@ -173,8 +162,13 @@ export default function Hero() {
               transition={{ delay: 0.2 }}
               className="text-sm sm:text-[0.95rem] text-gray-600 dark:text-gray-300 mb-5 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium"
             >
-              I help coaches, SaaS founders, and agencies automate workflows
-              using n8n, AI agents, and smart API integrations.
+              I help {currentText}
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                className="inline-block w-[3px] h-[0.8em] bg-gray-600 dark:bg-gray-300 ml-1 translate-y-[0.1em]"
+              />
+              with smart AI automation and workflow solutions.
             </motion.p>
 
             <motion.div
