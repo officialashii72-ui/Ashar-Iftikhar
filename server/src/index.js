@@ -336,6 +336,18 @@ const errorResponse = (res, message, status = 500) => {
     });
 };
 
+// Middleware: Require database connection for write operations
+const requireDatabase = (req, res, next) => {
+    if (!isDBConnected()) {
+        console.error("❌ Database connection required but MongoDB not connected");
+        return errorResponse(res, 
+            "Database not connected. MongoDB URI may not be set in environment variables. Please set MONGODB_URI in your Railway project settings.", 
+            503
+        );
+    }
+    next();
+};
+
 // ===========================================
 // AUTH ENDPOINTS
 // ===========================================
@@ -371,6 +383,19 @@ app.get("/api/auth/me", (req, res) => {
 // ===========================================
 app.get("/api/test", (req, res) => {
     res.json({ message: "✅ Backend is working!", status: "OK" });
+});
+
+// Database status endpoint - check MongoDB connection
+app.get("/api/status/db", (req, res) => {
+    const connected = isDBConnected();
+    res.status(connected ? 200 : 503).json({
+        success: connected,
+        database: connected ? "✅ Connected" : "❌ Disconnected",
+        mongodbUri: connected ? "✅ Set" : "❌ Not configured",
+        message: connected 
+            ? "Database is connected and ready for data persistence"
+            : "Database is NOT connected. Please set MONGODB_URI in your Railway environment variables."
+    });
 });
 
 app.get("/api/projects", async (req, res) => {
@@ -754,43 +779,54 @@ app.get("/api/projects/:id", async (req, res) => {
 });
 
 app.post("/api/projects", upload.single('image'), normalizeMultipart, async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ POST /api/projects: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot save project. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
         let projectData = { ...req.body };
         if (req.file) {
             projectData.image = `/uploads/${req.file.filename}`;
         }
-        console.log("Creating project with data:", projectData);
+        console.log("✅ Creating project in MongoDB:", projectData.title);
 
-        if (isDBConnected()) {
-            const project = new Project(projectData);
-            await project.save();
-            successResponse(res, project);
-        } else {
-            const project = { ...projectData, _id: Date.now().toString() };
-            successResponse(res, project);
-        }
+        const project = new Project(projectData);
+        await project.save();
+        console.log("✅ Project saved with ID:", project._id);
+        successResponse(res, project, "Project created successfully");
     } catch (error) {
-        console.error("Project creation error:", error);
-        errorResponse(res, "Failed to create project");
+        console.error("❌ Project creation error:", error);
+        errorResponse(res, `Failed to create project: ${error.message}`);
     }
 });
 
 app.put("/api/projects/:id", upload.single('image'), normalizeMultipart, async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ PUT /api/projects/:id: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot update project. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
         let updateData = { ...req.body };
         if (req.file) {
             updateData.image = `/uploads/${req.file.filename}`;
         }
 
-        if (isDBConnected()) {
-            const project = await Project.findByIdAndUpdate(req.params.id, updateData, { new: true });
-            successResponse(res, project);
-        } else {
-            successResponse(res, { ...updateData, _id: req.params.id });
-        }
+        const project = await Project.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        console.log("✅ Project updated with ID:", req.params.id);
+        successResponse(res, project, "Project updated successfully");
     } catch (error) {
-        console.error("Project update error:", error);
-        errorResponse(res, "Failed to update project");
+        console.error("❌ Project update error:", error);
+        errorResponse(res, `Failed to update project: ${error.message}`);
     }
 });
 
@@ -825,17 +861,23 @@ app.get("/api/admin/services", async (req, res) => {
 });
 
 app.post("/api/services", async (req, res) => {
+    // Require database connection for write operations
+    if (!isDBConnected()) {
+        console.error("❌ POST /api/services: Database not connected");
+        return errorResponse(res, 
+            "❌ Database not connected. Cannot save service. Please configure MONGODB_URI in your Railway environment variables.",
+            503
+        );
+    }
+    
     try {
-        if (isDBConnected()) {
-            const service = new Service(req.body);
-            await service.save();
-            successResponse(res, service);
-        } else {
-            const service = { ...req.body, _id: Date.now().toString() };
-            successResponse(res, service);
-        }
+        const service = new Service(req.body);
+        await service.save();
+        console.log("✅ Service saved with ID:", service._id);
+        successResponse(res, service, "Service created successfully");
     } catch (error) {
-        errorResponse(res, "Failed to create service");
+        console.error("❌ Service creation error:", error);
+        errorResponse(res, `Failed to create service: ${error.message}`);
     }
 });
 
