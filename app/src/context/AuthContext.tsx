@@ -38,8 +38,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       console.log('🔐 Attempting login with:', email);
 
-      // Get API URL from environment
-      const API_URL = import.meta.env.VITE_API_URL || 'https://ashar-iftikhar-production.up.railway.app/';
+      // Get API URL from environment and normalize so it always ends with /api
+      const rawApi = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      let API_URL = String(rawApi).replace(/\/+$/g, '');
+      if (!API_URL.endsWith('/api')) {
+        API_URL = API_URL + '/api';
+      }
       console.log('📡 Using API URL:', API_URL);
 
       // Use direct fetch to avoid axios issues

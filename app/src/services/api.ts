@@ -1,7 +1,12 @@
 import axios, { type AxiosInstance, type AxiosError } from 'axios';
 import type { ApiResponse } from '../types';
 
-const API_URL = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api';
+// Normalize VITE_API_URL so it always points to the API base (ends with /api)
+const rawApi = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api';
+let API_URL = String(rawApi).replace(/\/+$/g, '');
+if (!API_URL.endsWith('/api')) {
+  API_URL = API_URL + '/api';
+}
 
 // Create axios instance
 const api: AxiosInstance = axios.create({
