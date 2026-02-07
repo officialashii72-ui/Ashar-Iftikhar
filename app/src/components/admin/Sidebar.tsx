@@ -69,10 +69,10 @@ export default function AdminSidebar() {
         initial={{ x: -300 }}
         animate={{ x: 0 }}
         className={`fixed left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 z-40 transition-transform duration-300 lg:translate-x-0 ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+          } flex flex-col`}
       >
         {/* Logo */}
-        <div className="h-16 flex items-center px-6 border-b border-gray-200 dark:border-gray-800">
+        <div className="h-16 flex items-center px-6 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
           <Link to="/admin" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
               <span className="text-white font-bold text-sm">AI</span>
@@ -81,8 +81,8 @@ export default function AdminSidebar() {
           </Link>
         </div>
 
-        {/* Navigation */}
-        <nav className="p-4 space-y-1">
+        {/* Navigation - Scrollable */}
+        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
@@ -90,22 +90,22 @@ export default function AdminSidebar() {
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsMobileOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
+                className={`flex items-center gap-3 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
                   ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400'
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
                   }`}
               >
-                <item.icon className="w-5 h-5" />
-                {item.label}
+                <item.icon className="w-5 h-5 flex-shrink-0" />
+                <span className="truncate">{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        {/* User & Logout */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-gray-800">
-          <div className="flex items-center gap-3 mb-4 px-4">
-            <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-semibold">
+        {/* User & Logout - Fixed at Bottom */}
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
+          <div className="flex items-center gap-3 mb-3 px-4">
+            <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-semibold flex-shrink-0">
               {user?.name?.[0] || 'A'}
             </div>
             <div className="flex-1 min-w-0">
@@ -119,10 +119,10 @@ export default function AdminSidebar() {
           </div>
           <Button
             variant="ghost"
-            className="w-full justify-start text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+            className="w-full justify-start text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 h-9"
             onClick={handleLogout}
           >
-            <LogOut className="w-5 h-5 mr-2" />
+            <LogOut className="w-4 h-4 mr-2 flex-shrink-0" />
             Logout
           </Button>
         </div>

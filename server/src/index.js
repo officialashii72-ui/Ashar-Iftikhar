@@ -927,6 +927,30 @@ app.get("/api/admin/services", async (req, res) => {
     }
 });
 
+// GET single service by ID
+app.get("/api/services/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        if (isDBConnected()) {
+            const service = await Service.findById(id);
+            if (!service) {
+                return errorResponse(res, 'Service not found', 404);
+            }
+            successResponse(res, service);
+        } else {
+            // Demo mode - find in mock services
+            const service = demoData.services.find(s => s.id === id || s._id === id);
+            if (!service) {
+                return errorResponse(res, 'Service not found', 404);
+            }
+            successResponse(res, service);
+        }
+    } catch (error) {
+        errorResponse(res, `Failed to fetch service: ${error.message}`);
+    }
+});
+
 app.post("/api/services", async (req, res) => {
     // Require database connection for write operations
     if (!isDBConnected()) {
