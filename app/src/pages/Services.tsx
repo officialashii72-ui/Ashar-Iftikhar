@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import { Check, ArrowRight, Briefcase, Bot, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { servicesAPI } from '@/services/api';
+import { useSettings } from '@/context/SettingsContext';
 import type { Service } from '@/types';
 // Removed unused getImageUrl
 
 export default function Services() {
+  const { settings } = useSettings();
   const [services, setServices] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -102,7 +104,7 @@ export default function Services() {
 
                   {/* CTA */}
                   <a
-                    href="https://calendly.com/ashariftikhar"
+                    href={settings.calendlyUrl || "https://calendly.com/ashariftikhar"}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -163,7 +165,7 @@ export default function Services() {
             requirements and create something amazing together.
           </p>
           <a
-            href="https://calendly.com/ashariftikhar"
+            href={settings.calendlyUrl || "https://calendly.com/ashariftikhar"}
             target="_blank"
             rel="noopener noreferrer"
           >

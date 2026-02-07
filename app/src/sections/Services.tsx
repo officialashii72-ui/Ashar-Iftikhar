@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Check, Zap, Users, FileText, Bot, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { servicesAPI } from '../services/api';
+import { useSettings } from '../context/SettingsContext';
 import type { Service } from '../types';
 
 export default function Services() {
+  const { settings } = useSettings();
   const [services, setServices] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -129,7 +131,7 @@ export default function Services() {
 
                     {/* CTA */}
                     <a
-                      href="https://calendly.com/ashariftikhar"
+                      href={settings.calendlyUrl || "https://calendly.com/ashariftikhar"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block mt-auto"

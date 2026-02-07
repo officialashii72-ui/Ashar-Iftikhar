@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, MapPin, Phone, Send, Calendar, Github, Linkedin, Twitter, Loader2, Check } from 'lucide-react';
+import { Mail, MapPin, Phone, Send, Github, Linkedin, Twitter, Loader2, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '../context/ToastContext';
 import { useSettings } from '../context/SettingsContext';
 import { contactAPI } from '../services/api';
+import CalendlyWidget from '../components/CalendlyWidget';
 
 export default function Contact() {
   const { success, error } = useToast();
@@ -99,113 +100,99 @@ export default function Contact() {
 
       {/* Contact Content */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Left Column - Contact Info */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Left Column - Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              Contact Information
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-8">
-              Fill out the form or reach out directly. I'm always excited to discuss
-              new projects and automation opportunities.
-            </p>
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Send us a Message
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Fill out the form to reach out directly. I'll get back to you within 24 hours.
+                </p>
+              </div>
 
-            {/* Contact Details */}
-            <div className="space-y-6 mb-8">
-              {contactInfo.map((item) => (
-                <div key={item.label} className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
-                    <item.icon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              {/* Contact Details */}
+              <div className="space-y-4">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mt-6">
+                  Contact Information
+                </p>
+                {contactInfo.map((item) => (
+                  <div key={item.label} className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <item.icon className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-medium">
+                        {item.label}
+                      </p>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="text-sm text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="text-sm text-gray-900 dark:text-white">{item.value}</p>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{item.label}</p>
-                    {item.href ? (
-                      <a
-                        href={item.href}
-                        className="text-gray-900 dark:text-white font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                      >
-                        {item.value}
-                      </a>
-                    ) : (
-                      <p className="text-gray-900 dark:text-white font-medium">{item.value}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Social Links */}
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Follow me:</p>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </a>
                 ))}
               </div>
-            </div>
 
-            {/* Calendly CTA */}
-            <div className="mt-12 p-6 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl">
-              <div className="flex items-center gap-3 mb-3">
-                <Calendar className="w-6 h-6 text-white" />
-                <h3 className="text-lg font-semibold text-white">Book a Free Call</h3>
+              {/* Social Links */}
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-medium mb-4">
+                  Follow Me
+                </p>
+                <div className="flex gap-3">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                      title={social.label}
+                    >
+                      <social.icon className="w-4 h-4" />
+                    </a>
+                  ))}
+                </div>
               </div>
-              <p className="text-white/80 mb-4">
-                Schedule a 15-minute discovery call to discuss your project.
-              </p>
-              <a
-                href={settings.calendlyUrl || "https://calendly.com/ashariftikhar"}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button className="bg-white text-indigo-600 hover:bg-gray-100">
-                  Schedule Now
-                </Button>
-              </a>
             </div>
-          </motion.div>
 
-          {/* Right Column - Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-lg">
+            {/* Contact Form */}
+            <div className="mt-8 bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
               {isSubmitted ? (
-                <div className="text-center py-12">
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                    <Check className="w-10 h-10 text-green-600 dark:text-green-400" />
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     Message Sent!
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">
+                  <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
                     Thank you for reaching out. I'll get back to you within 24 hours.
                   </p>
                   <Button
                     onClick={() => setIsSubmitted(false)}
                     variant="outline"
+                    size="sm"
                   >
                     Send Another Message
                   </Button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                       Your Name
                     </label>
                     <Input
@@ -213,12 +200,12 @@ export default function Contact() {
                       placeholder="John Doe"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full"
+                      className="w-full text-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                       Email Address
                     </label>
                     <Input
@@ -226,25 +213,25 @@ export default function Contact() {
                       placeholder="john@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full"
+                      className="w-full text-sm"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                       Your Message
                     </label>
                     <Textarea
                       placeholder="Tell me about your project..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full min-h-[150px]"
+                      className="w-full min-h-[120px] text-sm"
                     />
                   </div>
 
                   <Button
                     type="submit"
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -262,6 +249,24 @@ export default function Contact() {
                 </form>
               )}
             </div>
+          </motion.div>
+
+          {/* Right Column - Calendly Widget */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex flex-col"
+          >
+            <div className="mb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                Book a Free Consultation
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+                Schedule a 15-minute discovery call to discuss your project and automation needs.
+              </p>
+            </div>
+            <CalendlyWidget />
           </motion.div>
         </div>
       </section>

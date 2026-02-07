@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useSettings } from '../context/SettingsContext';
 import { 
   Layers, 
   Youtube, 
@@ -79,6 +80,7 @@ const tools = [
 ];
 
 export default function Tools() {
+  const { settings } = useSettings();
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -157,7 +159,7 @@ export default function Tools() {
 
               {/* CTA */}
               <a
-                href="https://calendly.com/ashariftikhar"
+                href={settings.calendlyUrl || "https://calendly.com/ashariftikhar"}
                 target="_blank"
                 rel="noopener noreferrer"
               >
