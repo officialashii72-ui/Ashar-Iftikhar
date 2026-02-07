@@ -45,23 +45,20 @@ export default function CTA() {
             Ready to Automate Your Business?
           </h2>
           <p className="text-lg sm:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-            Book a free 15-minute AI audit. I'll analyze your current workflows
-            and show you exactly where automation can save you time and money.
+            Ready to get started? Let&apos;s discuss your project and see how we can help you achieve your goals.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href={settings.calendlyUrl || "https://calendly.com/ashariftikhar"}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/contact"
             >
               <Button
                 size="lg"
                 className="bg-white text-indigo-600 hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold group"
               >
                 <Calendar className="mr-2 w-5 h-5" />
-                Book Free AI Audit
+                Start a Project
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </a>

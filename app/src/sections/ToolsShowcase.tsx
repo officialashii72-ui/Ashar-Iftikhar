@@ -274,22 +274,19 @@ export default function ToolsShowcase() {
                     <ClipboardList className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                    Free AI Workflow Audit
+                    Custom Automation Solutions
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-                    Book a free 15-minute call where I&apos;ll analyze your current workflows 
-                    and identify automation opportunities.
+                    Let&apos;s discuss your business automation needs and find the perfect solutions for your workflow.
                   </p>
                   <a
-                    href="https://calendly.com/ashariftikhar"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/contact"
                   >
                     <Button
                       size="lg"
                       className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-8"
                     >
-                      Book Your Free Audit
+                      Start a Project
                     </Button>
                   </a>
                 </div>

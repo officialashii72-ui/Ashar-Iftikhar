@@ -124,13 +124,11 @@ export default function Navbar() {
 
             {/* CTA Button - Desktop */}
             <a
-              href={settings.calendlyUrl || "https://calendly.com/ashariftikhar"}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/contact"
               className="hidden sm:inline-flex"
             >
               <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6">
-                Book Free Audit
+                Start a Project
               </Button>
             </a>
 
@@ -179,13 +177,11 @@ export default function Navbar() {
               {/* Mobile CTA Button */}
               <div className="pt-4 mt-4 border-t border-gray-200 dark:border-gray-800">
                 <a
-                  href={settings.calendlyUrl || "https://calendly.com/ashariftikhar"}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/contact"
                   className="block"
                 >
                   <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-6 text-base font-bold shadow-lg shadow-indigo-500/20">
-                    Book Free Audit
+                    Start a Project
                   </Button>
                 </a>
               </div>

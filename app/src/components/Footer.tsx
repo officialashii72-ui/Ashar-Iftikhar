@@ -4,16 +4,18 @@ import { Zap, Github, Linkedin, Twitter, Mail, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useSettings } from '../context/SettingsContext';
+import { useState, useEffect } from 'react';
+import type { Service } from '../types';
 
 const footerLinks = {
-  services: [
-    { label: 'AI Workflow Automation', path: '/services' },
-    { label: 'Lead Generation', path: '/services' },
-    { label: 'Content Engine', path: '/services' },
-    { label: 'API Integration', path: '/services' },
+  quickLinks: [
+    { label: 'Home', path: '/' },
+    { label: 'Services', path: '/services' },
+    { label: 'Case Studies', path: '/case-studies' },
+    { label: 'Testimonials', path: '/#testimonials' },
+    { label: 'Contact', path: '/contact' },
   ],
   company: [
-    { label: 'Case Studies', path: '/case-studies' },
     { label: 'Blog', path: '/blog' },
     { label: 'About', path: '/' },
     { label: 'Contact', path: '/contact' },
@@ -21,13 +23,37 @@ const footerLinks = {
   tools: [
     { label: 'Content Repurposer', path: '/tools' },
     { label: 'LinkedIn Generator', path: '/tools' },
-    { label: 'AI Audit', path: '/tools' },
+    { label: 'All Tools', path: '/tools' },
   ],
 };
 
 // Fallback social icons mapping
 export default function Footer() {
   const { settings } = useSettings();
+  const [services, setServices] = useState<Service[]>([]);
+  
+  // Fetch services from API
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const apiBase = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api';
+        const normalizedApi = String(apiBase).replace(/\/+$/, '').endsWith('/api') ? String(apiBase).replace(/\/+$/, '') : String(apiBase).replace(/\/+$/, '') + '/api';
+        
+        const response = await fetch(`${normalizedApi}/services`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data) {
+            setServices(data.data.slice(0, 4)); // Show first 4 services
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch services:', err);
+      }
+    };
+    
+    fetchServices();
+  }, []);
+  
   // Calculate days since start (assuming start date)
   const startDate = new Date('2024-01-01');
   const today = new Date();
@@ -75,13 +101,13 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Services Links */}
+          {/* Quick Links */}
           <div>
             <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
-              Services
+              Quick Links
             </h3>
             <ul className="space-y-3">
-              {footerLinks.services.map((link) => (
+              {footerLinks.quickLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     to={link.path}
@@ -91,6 +117,36 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Services Links - Dynamic from API */}
+          <div>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
+              Services
+            </h3>
+            <ul className="space-y-3">
+              {services.length > 0 ? (
+                services.map((service) => (
+                  <li key={service._id}>
+                    <Link
+                      to="/services"
+                      className="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors text-sm"
+                    >
+                      {service.title || service.name}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li>
+                  <Link
+                    to="/services"
+                    className="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors text-sm"
+                  >
+                    View All Services
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 

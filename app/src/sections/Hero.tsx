@@ -192,24 +192,22 @@ export default function Hero() {
               className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
             >
               <a
-                href="https://calendly.com/ashariftikhar"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/contact"
               >
                 <Button
                   className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6 py-4 text-sm font-bold group shadow-lg shadow-indigo-500/10 hover:shadow-indigo-500/20 transition-all duration-300"
                 >
-                  Book Free AI Audit
+                  Start a Project
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </a>
-              <a href="#tools">
+              <a href="/services">
                 <Button
                   variant="outline"
                   className="rounded-full px-6 py-4 text-sm font-bold group border hover:bg-white dark:hover:bg-gray-800 transition-all duration-300"
                 >
                   <Play className="mr-2 w-4 h-4 fill-indigo-600 text-indigo-600 group-hover:scale-110 transition-transform" />
-                  See AI Tools
+                  View Services
                 </Button>
               </a>
             </motion.div>
